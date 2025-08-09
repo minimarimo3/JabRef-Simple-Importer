@@ -29,8 +29,7 @@ async function main() {
         const correctTitle = response.title;
 
         // 2. BibTeX出力の中から title = {...} の行を見つけるための正規表現
-        //   \s* は0個以上の空白、.*? は任意の文字列（最短マッチ）、i は大文字小文字を区別しない
-        const titleRegex = /title\s*=\s*\{.*?\}/i;
+        const titleRegex = /title\s*=\s*\{.*\}/i;
 
         // 3. 新しいtitle行を作成（二重の中括弧で日本語を保護するのがポイント）
         const newTitleLine = `title = {{${correctTitle}}}`;
