@@ -31,13 +31,18 @@ function extractMetadata() {
     'DC.title': 'title',
     'DC.creator': 'author',
     'DC.date': 'issued',
-    'DC.publisher': 'publisher'
+    'DC.publisher': 'publisher',
+
+    // abstract用
+    'description': 'abstract',
+    'DC.description': 'abstract',
+    'citation_abstract': 'abstract'
   };
 
   metaTags.forEach(tag => {
-    const name = tag.getAttribute('name');
-    if (mapping[name]) {
-      const cslKey = mapping[name];
+    const key = tag.getAttribute('name') || tag.getAttribute('property');
+    if (mapping[key]) {
+      const cslKey = mapping[key];
       const content = tag.getAttribute('content');
 
       // 有効なコンテンツがある場合のみ処理
@@ -62,6 +67,12 @@ function extractMetadata() {
       }
     }
   });
+
+  // Open Graphのdescriptionもチェック (og:description)
+  const ogDescription = document.querySelector('meta[property="og:description"]');
+  if (ogDescription && !cslData.abstract) { // まだabstractがなければ
+    cslData.abstract = ogDescription.content;
+  }
 
   // サイト専用パーサーの呼び出し
   const url = new URL(window.location.href);
