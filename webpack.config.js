@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     popup: './src/popup.js',
     content_script: './src/content_script.js',
+    background: './src/background.js',
   },
 
   // 出力設定: どこに、何という名前でファイルを出力するか

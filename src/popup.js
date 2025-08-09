@@ -47,6 +47,16 @@ async function main() {
 
         // 5. 結果をポップアップ画面に表示
         displayArea.textContent = biblatexOutput;
+        chrome.runtime.sendMessage({
+          type: 'SEND_PAGE_TITLE_TO_JABREF',
+          biblatex: biblatexOutput
+        })/*.then(response => {
+          if (response.success) {
+            resultDiv.textContent = "Success!\n" + response.bibtex;
+          } else {
+            resultDiv.textContent = "Error: " + response.error;
+          }
+        })*/;
       } catch (e) {
         displayArea.textContent = '引用の生成に失敗しました。';
         console.error(e);
