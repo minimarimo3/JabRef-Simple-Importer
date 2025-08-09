@@ -27,14 +27,21 @@ async function main() {
 
         // 1. 正しい日本語タイトルを元のデータから取得
         const correctTitle = response.title;
+        const correctAbstract = response.abstract || '';
 
         // 2. BibTeX出力の中から title = {...} の行を見つけるための正規表現
         const titleRegex = /title\s*=\s*\{.*\}/i;
+        const abstractRegex = /abstract\s*=\s*\{.*\}/i;
 
         // 3. 新しいtitle行を作成（二重の中括弧で日本語を保護するのがポイント）
         const newTitleLine = `title = {{${correctTitle}}}`;
+        const newabstractLine = `abstract = {{${correctAbstract}}}`;
 
         // 4. biblatexOutputのtitle行を、作成した新しい行で置き換える
+        if (biblatexOutput.match(abstractRegex)) {
+          biblatexOutput = biblatexOutput.replace(abstractRegex, newabstractLine);
+          console.log('abstractを日本語に強制上書きしました。');
+        }
         if (biblatexOutput.match(titleRegex)) {
           biblatexOutput = biblatexOutput.replace(titleRegex, newTitleLine);
           console.log('タイトルを日本語に強制上書きしました。');
