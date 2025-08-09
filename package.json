@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "copy-webpack-plugin": "^13.0.0",
+    "patch-package": "^8.0.0",
+    "webpack": "^5.101.0",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@citation-js/plugin-bibjson": "^0.7.18",
+    "@citation-js/plugin-bibtex": "^0.7.18",
+    "@citation-js/plugin-isbn": "^0.4.0",
+    "@citation-js/plugin-software-formats": "^0.6.1",
+    "citation-js": "^0.7.20"
+  },
+  "scripts": {
+    "dev": "webpack --mode development --watch",
+    "build": "webpack --mode production"
+  }
+}

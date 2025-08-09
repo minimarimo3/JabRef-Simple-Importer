@@ -1,0 +1,91 @@
+<!--
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>書誌情報</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      width: 400px;
+      padding: 10px;
+    }
+    h2, h3 {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+      margin-top: 15px;
+    }
+    #loading, #error {
+      text-align: center;
+      padding: 20px;
+      font-weight: bold;
+    }
+    #error {
+      color: #d9534f;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #eee;
+      font-size: 12px;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #f0f0f0;
+    }
+    button.copied {
+      background-color: #5cb85c;
+      color: white;
+      border-color: #4cae4c;
+    }
+  </style>
+</head>
+<body>
+  <h2>書誌情報</h2>
+  <div id="loading">読み込み中...</div>
+  <div id="error" style="display:none;"></div>
+
+  <div id="citation-output" style="display:none;">
+    <h3>APA スタイル</h3>
+    <pre id="apa-output"></pre>
+    <button id="copy-apa">APAをコピー</button>
+
+    <h3>BibTeX</h3>
+    <pre id="bibtex-output"></pre>
+    <button id="copy-bibtex">BibTeXをコピー</button>
+
+    <h3>取得データ (JSON)</h3>
+    <pre id="data-output"></pre>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body { width: 400px; white-space: pre; font-family: monospace; padding: 10px;}
+    </style>
+  </head>
+  <body>
+    <div id="output">読み込み中...</div>
+    <script src="popup.js"></script>
+  </body>
+</html>

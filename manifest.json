@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "JabRef Simple Importer",
+  "version": "1.0",
+  "description": "現在のページの書誌情報をCitation.jsで取得し、JabRefに送信します。",
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content_script.js"
+      ]
+    }
+  ]
+}
