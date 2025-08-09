@@ -1,51 +1,3 @@
-/*
-import Cite from 'citation-js';
-
-// メインの処理を関数にまとめます
-async function createCitation() {
-  // 1. まず、現在アクティブなタブの情報を取得します
-  // chrome.tabs.queryはPromiseを返すので、awaitで結果を待てます
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  // タブ情報がなければ処理を終了
-  if (!tab || !tab.url) {
-    document.body.innerHTML = '<p>現在のタブ情報を取得できませんでした。</p>';
-    return;
-  }
-
-  const pageUrl = tab.url;
-  const pageTitle = tab.title;
-  let citation; // 引用情報を入れる変数を宣言
-
-  // 2. 引用の生成を試みます
-  try {
-    // まずURLから直接生成を試みる（DOIなどが見つかれば成功する）
-    citation = new Cite(pageUrl);
-    console.log('URLから引用を生成しました (成功)');
-  } catch (error) {
-    // 3. 失敗した場合（catchブロック）、手動でデータを作成します
-    console.log('URLからの生成に失敗。手動でフォールバック引用を作成します。');
-    citation = new Cite({
-      type: 'webpage', // BibTeXの'misc'に相当し、ウェブサイトに適しています
-      title: pageTitle,
-      URL: pageUrl,
-      'accessed': { // アクセス日を追加すると、より丁寧です
-        'date-parts': [[new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]]
-      }
-    });
-  }
-
-  // 4. 成功・失敗どちらの場合でも、最終的に生成されたcitationオブジェクトを整形して表示します
-  const output = citation.format('bibtex');
-
-  document.body.innerHTML = `<pre>${output}</pre>`;
-}
-
-// 作成した関数を実行します
-createCitation();
-*/
-
-
 import Cite from './citation.js';
 
 async function main() {
@@ -69,11 +21,33 @@ async function main() {
       console.log('受け取ったメタデータ:', response);
       try {
         // 4. 受け取ったデータ(response)を元に、引用を生成
+        // XXX: なんか知らんが日本語がここで削り落とされるので、強制的に上書きする
         const citation = new Cite(response);
-        const bibtexOutput = citation.format('bibtex');
-        
+        let biblatexOutput = citation.format('biblatex');
+
+        // 1. 正しい日本語タイトルを元のデータから取得
+        const correctTitle = response.title;
+
+        // 2. BibTeX出力の中から title = {...} の行を見つけるための正規表現
+        //   \s* は0個以上の空白、.*? は任意の文字列（最短マッチ）、i は大文字小文字を区別しない
+        const titleRegex = /title\s*=\s*\{.*?\}/i;
+
+        // 3. 新しいtitle行を作成（二重の中括弧で日本語を保護するのがポイント）
+        const newTitleLine = `title = {{${correctTitle}}}`;
+
+        // 4. biblatexOutputのtitle行を、作成した新しい行で置き換える
+        if (biblatexOutput.match(titleRegex)) {
+          biblatexOutput = biblatexOutput.replace(titleRegex, newTitleLine);
+          console.log('タイトルを日本語に強制上書きしました。');
+        } else {
+          // もしtitle行自体がなかった場合の予備処理
+          // 最初の「{」の直後に挿入する
+          biblatexOutput = biblatexOutput.replace('{', `{\n  ${newTitleLine},`);
+          console.log('titleフィールドが見つからなかったため、日本語タイトルを追加しました。');
+        }
+
         // 5. 結果をポップアップ画面に表示
-        displayArea.textContent = bibtexOutput;
+        displayArea.textContent = biblatexOutput;
       } catch (e) {
         displayArea.textContent = '引用の生成に失敗しました。';
         console.error(e);
