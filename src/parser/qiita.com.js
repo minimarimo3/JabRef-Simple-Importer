@@ -1,5 +1,4 @@
 export default function(cslData, url) {
-  console.log('Qiita.com専用パーサーを実行します');
   const pathParts = url.pathname.split('/').filter(p => p);
 
   if (pathParts.length >= 2) {

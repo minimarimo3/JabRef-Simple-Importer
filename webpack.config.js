@@ -7,8 +7,8 @@ module.exports = {
 
   // エントリーポイント: どのファイルからバンドルを始めるか
   entry: {
-    popup: './popup.js',
-    content_script: './content_script.js',
+    popup: './src/popup.js',
+    content_script: './src/content_script.js',
   },
 
   // 出力設定: どこに、何という名前でファイルを出力するか
@@ -22,8 +22,8 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         // manifest.jsonとpopup.htmlをdistフォルダにコピーする
-        { from: 'manifest.json', to: 'manifest.json' },
-        { from: 'popup.html', to: 'popup.html' },
+        { from: './manifest.json', to: 'manifest.json' },
+        { from: './src/popup.html', to: 'popup.html' },
         // もしアイコンがあれば、それもコピーする
         // { from: 'src/icons', to: 'icons' }
       ],
