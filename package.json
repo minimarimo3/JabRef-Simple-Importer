@@ -15,5 +15,6 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production"
-  }
+  },
+  "version": "0.0.3"
 }

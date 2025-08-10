@@ -18,6 +18,11 @@ module.exports = {
     filename: '[name].js', // [name]にはentryのキー（popup）が入る
   },
 
+  // パフォーマンス（ファイルサイズ）に関する警告をすべて無効にする
+  performance: {
+    hints: false,
+  },
+
   // プラグイン設定
   plugins: [
     new CopyPlugin({
