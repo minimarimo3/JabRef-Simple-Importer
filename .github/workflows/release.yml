@@ -32,7 +32,7 @@ jobs:
           echo "package.json version: $PACKAGE_VERSION"
           
           # manifest.jsonからバージョンを取得
-          MANIFEST_VERSION=$(node -p "require('./dist/manifest.json').version")
+          MANIFEST_VERSION=$(node -p "require('./manifest.json').version")
           echo "manifest.json version: $MANIFEST_VERSION"
 
           # 3つのバージョンを比較
