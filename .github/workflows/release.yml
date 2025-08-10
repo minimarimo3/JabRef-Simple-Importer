@@ -17,26 +17,44 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # プロジェクトで使用しているNode.jsのバージョンに合わせてください
+          node-version: '22'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Verify version consistency
+        id: verify_version
+        run: |
+          # Gitタグから 'v' を除いたバージョンを取得 (例: v1.2.3 -> 1.2.3)
+          TAG_VERSION=${{ github.ref_name }}
+          TAG_VERSION_NUM=${TAG_VERSION#v}
+          echo "Tag version: $TAG_VERSION_NUM"
 
-      - name: Build extension
-        run: npm run build
+          # package.jsonからバージョンを取得
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "package.json version: $PACKAGE_VERSION"
+          
+          # manifest.jsonからバージョンを取得
+          MANIFEST_VERSION=$(node -p "require('./dist/manifest.json').version")
+          echo "manifest.json version: $MANIFEST_VERSION"
 
-      - name: Get version from package.json
-        id: get_version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          # 3つのバージョンを比較
+          if [ "$TAG_VERSION_NUM" != "$PACKAGE_VERSION" ] || [ "$TAG_VERSION_NUM" != "$MANIFEST_VERSION" ]; then
+            echo "::error::Version mismatch detected!"
+            echo "Tag: $TAG_VERSION_NUM, package.json: $PACKAGE_VERSION, manifest.json: $MANIFEST_VERSION"
+            exit 1
+          else
+            echo "Versions are consistent."
+            echo "version=${PACKAGE_VERSION}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install & build dependencies
+        run: |
+            npm install
+            npm run build
 
       - name: Create ZIP file
-        # 'dist'ディレクトリをzipに固めます。ビルド成果物が異なるディレクトリに出力される場合は修正してください。
-        # 例: build/ or public/ など
         run: |
-          zip -r extension-${{ steps.get_version.outputs.version }}.zip dist/
+          zip -r JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}.zip dist/
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: extension-${{ steps.get_version.outputs.version }}.zip
-          # GITHUB_TOKENは自動的に設定されるため、明示的にsecretsに登録する必要はありません。
+          files: JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}.zip
