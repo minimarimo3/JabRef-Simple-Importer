@@ -5,7 +5,9 @@ import { Cite } from '@citation-js/core';
 import '@citation-js/plugin-wikidata';
 import '@citation-js/plugin-bibtex';
 import '@citation-js/plugin-doi';
-import '@citation-js/plugin-software-formats';
+// キー使わずにAPI使ってるから制限がかかることがあるらしい。削除
+//  https://github.com/citation-js/plugin-software-formats/tree/main/packages/plugin-github
+// import '@citation-js/plugin-software-formats';
 import '@citation-js/plugin-isbn';
 
 // 3. 設定済みのCiteクラスを、アプリケーションの他の部分で使えるようにエクスポートします
