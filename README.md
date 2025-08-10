@@ -2,9 +2,9 @@
 
 今見てるサイトをcitation.jsで解析してJabRefに取り込む**小規模な**拡張機能です。
 
-PDFの自動取り込みはないし、サイトの自動解析は公式（というかZotero）に劣ります。
+PDFの自動取り込みはないし、サイトの自動解析は公式の拡張機能（というかあれは内部でZotero拡張機能使ってるのでZoteroですが）に劣ります。
 
-公式のはzotero-connectorをcloneしてビルドすれば使えるには使えるんですがmanifest V2でサポート切れるので3の拡張機能を作りました。
+公式のはzotero-connectorをcloneしてビルドすれば使えるには使えるんですがmanifest V2なのでV3の拡張機能を作りました。
 
 ## 使用するための前準備
 
@@ -27,7 +27,7 @@ macOS & Vivaldiは`/Library/Google/Chrome/NativeMessagingHosts/org.jabref.jabref
 chrome-extension://flppkebpbdkmjidbfkdjdofndbepmlnb/
 ```
 
-全体はこうなる。
+多分中身はこうなる。
 
 ```json
 {
