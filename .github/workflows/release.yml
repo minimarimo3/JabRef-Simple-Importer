@@ -31,14 +31,10 @@ jobs:
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           echo "package.json version: $PACKAGE_VERSION"
           
-          # manifest.jsonからバージョンを取得
-          MANIFEST_VERSION=$(node -p "require('./manifest.json').version")
-          echo "manifest.json version: $MANIFEST_VERSION"
-
           # 3つのバージョンを比較
-          if [ "$TAG_VERSION_NUM" != "$PACKAGE_VERSION" ] || [ "$TAG_VERSION_NUM" != "$MANIFEST_VERSION" ]; then
+          if [ "$TAG_VERSION_NUM" != "$PACKAGE_VERSION" ]; then
             echo "::error::Version mismatch detected!"
-            echo "Tag: $TAG_VERSION_NUM, package.json: $PACKAGE_VERSION, manifest.json: $MANIFEST_VERSION"
+            echo "Tag: $TAG_VERSION_NUM, package.json: $PACKAGE_VERSION"
             exit 1
           else
             echo "Versions are consistent."

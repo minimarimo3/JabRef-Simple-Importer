@@ -16,5 +16,5 @@
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production"
   },
-  "version": "0.0.6"
+  "version": "0.0.7"
 }
