@@ -9,7 +9,6 @@ export default function(cslData, url) {
     cslData.type = 'webpage';
     cslData.title = `${username}/${document.title}`;
     cslData.author = [{ literal: username }];
-    cslData.URL = `https://zenn.dev/${username}/${document_type}/${page_id}`;
 
     delete cslData['container-title']; 
     delete cslData.publisher;

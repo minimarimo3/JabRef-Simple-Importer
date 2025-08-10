@@ -3,11 +3,12 @@ export default function(cslData, url) {
 
   if (pathParts.length >= 2) {
     const username = pathParts[0];
-    const page_id = pathParts[1];
+    const product_name = pathParts[1];
 
     cslData.type = 'webpage';
     cslData.title = `${username}/${document.title}`;
     cslData.author = [{ literal: username }];
+    cslData.URL = url.href;
 
     delete cslData['container-title']; 
     delete cslData.publisher;

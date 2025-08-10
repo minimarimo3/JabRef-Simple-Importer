@@ -1,39 +1,26 @@
 /*
-async function sendToJabRefNativeHost(bibtexText) {
-    // これが起動しない。
-    console.log('Sending BibTeX to JabRef Native Host:', bibtexText);
-    return new Promise((resolve, reject) => {
-        try {
-            const port = chrome.runtime.connectNative('org.jabref.jabref');
-            port.postMessage({ text: bibtexText });
+async function isJabRefRunning() {
+  return new Promise((resolve) => {
+    try {
+      const port = chrome.runtime.connectNative('org.jabref.jabref');
+      port.postMessage({ status: "validate" });
 
-            port.onMessage.addListener((response) => {
-                resolve(response);
-                port.disconnect();
-            });
-
-            port.onDisconnect.addListener(() => {
-                if (chrome.runtime.lastError) {
-                    reject(new Error(chrome.runtime.lastError.message));
-                }
-            });
-        } catch (e) {
-            reject(e);
+      port.onMessage.addListener((response) => {
+        if (response.message === 'jarFound') {
+          resolve(true);
+        } else {
+          resolve(false);
         }
-    });
-}
-
-// popupからのリクエストを受けてページタイトルを取得し、BibTeXを生成してJabRefに送信
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log('Received message:', message);
-    if (message.type === 'SEND_BIBTEX_TO_JABREF') {
-        // ここでbibtexはstringとして受け取れる
-        sendToJabRefNativeHost(message.bibtex)
-            .then(response => sendResponse({ success: true, response }))
-            .catch(error => sendResponse({ success: false, error: error.message }));
-        return true; // 非同期応答
+        port.disconnect();
+      });
+      port.onDisconnect.addListener(() => {
+        resolve(false);
+      });
+    } catch {
+      resolve(false);
     }
-});
+  });
+}
 */
 
 async function sendToJabRefNativeHost(bibtexText) {
@@ -64,6 +51,8 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
     console.log('Received message:', message);
     if (message.type === 'SEND_PAGE_TITLE_TO_JABREF') {
         try {
+            // TODO: ここでJabRefのGUIが起動しているか確認したい。でも公式拡張でもやってないので、現状は無視
+            //  単にサーバーが起動しているかどうかはisJabRefRunning()で確認できる
             const response = await sendToJabRefNativeHost(message.biblatex);
             return { success: true, response };
         } catch (error) {

@@ -70,7 +70,7 @@ function extractMetadata() {
 
   // Open Graphのdescriptionもチェック (og:description)
   const ogDescription = document.querySelector('meta[property="og:description"]');
-  if (ogDescription && !cslData.abstract) { // まだabstractがなければ
+  if (ogDescription && !cslData.abstract) {
     cslData.abstract = ogDescription.content;
   }
 
