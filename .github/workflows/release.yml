@@ -1,0 +1,42 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*' # vから始まるタグ（例: v1.0.0）がプッシュされたときに実行
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # リリースを作成するために必要
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # プロジェクトで使用しているNode.jsのバージョンに合わせてください
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Get version from package.json
+        id: get_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Create ZIP file
+        # 'dist'ディレクトリをzipに固めます。ビルド成果物が異なるディレクトリに出力される場合は修正してください。
+        # 例: build/ or public/ など
+        run: |
+          zip -r extension-${{ steps.get_version.outputs.version }}.zip dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: extension-${{ steps.get_version.outputs.version }}.zip
+          # GITHUB_TOKENは自動的に設定されるため、明示的にsecretsに登録する必要はありません。

@@ -86,6 +86,42 @@ function extractMetadata() {
   // 3. メタタグ情報で更新されたデータを返す
   console.log('メタタグ情報で更新されたデータを返します:', cslData);
 
+  // もし、ここまでの処理でabstractが取得できていなければ
+  if (!cslData.abstract) {
+    console.log('アブストラクトが見つからないため、本文から自動生成を試みます。');
+
+    // 1. 本文が含まれていそうな要素を優先順位順に探す
+    const selectors = [
+      'article',          // セマンティックな記事要素
+      'main',             // メインコンテンツ要素
+      '.post-body',       // ブログなどでよく使われるクラス
+      '.article-content', // 記事でよく使われるクラス
+      '#content'          // 一般的なコンテナID
+    ];
+    let mainContentElement = null;
+    for (const selector of selectors) {
+      mainContentElement = document.querySelector(selector);
+      if (mainContentElement) break; // 見つかったらループを抜ける
+    }
+
+    // 2. 本文要素が見つかったら、テキストを抽出して整形する
+    if (mainContentElement) {
+      // innerTextで人間が読めるテキストだけを抽出
+      let text = mainContentElement.innerText;
+
+      // 3. 改行や余分な空白を詰めて、読みやすくする
+      text = text.replace(/\s+/g, ' ').trim();
+
+      // 4. 240文字に切り詰めて、末尾に省略記号を付ける
+      if (text.length > 240) {
+        cslData.abstract = text.substring(0, 240) + '…';
+      } else {
+        cslData.abstract = text;
+      }
+      console.log('本文からアブストラクトを生成しました。');
+    }
+  }
+
   return cslData;
 }
 
