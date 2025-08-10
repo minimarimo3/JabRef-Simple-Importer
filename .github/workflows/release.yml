@@ -52,7 +52,8 @@ jobs:
 
       - name: Create ZIP file
         run: |
-          zip -r JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}.zip dist/
+          mv dist JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}
+          zip -r JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}.zip JabRef-Simple-Importer-${{ steps.verify_version.outputs.version }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
