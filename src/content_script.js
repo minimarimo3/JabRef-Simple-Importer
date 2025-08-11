@@ -11,7 +11,7 @@ function extractMetadata() {
     URL: window.location.href,
     // アクセス日も基本情報として入れておく
     accessed: {
-      'date-parts': [[new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]]
+      'date-parts': [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()]
     }
   };
 
