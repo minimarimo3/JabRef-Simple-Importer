@@ -24,10 +24,10 @@ PDFの自動取り込みはないし、サイトの自動解析は公式の拡�
 macOS & Vivaldiは`/Library/Google/Chrome/NativeMessagingHosts/org.jabref.jabref.json`
 
 ```txt
-chrome-extension://flppkebpbdkmjidbfkdjdofndbepmlnb/
+chrome-extension://拡張機能のID/
 ```
 
-多分中身はこうなる。
+多分中身はこうなる。（バージョンによって異なる）
 
 ```json
 {
@@ -38,7 +38,7 @@ chrome-extension://flppkebpbdkmjidbfkdjdofndbepmlnb/
   "allowed_origins": [
     "chrome-extension://bifehkofibaamoeaopjglfkddgkijdlh/",
     "chrome-extension://pgkajmkfgbehiomipedjhoddkejohfna/",
-    "chrome-extension://flppkebpbdkmjidbfkdjdofndbepmlnb/"
+    "chrome-extension://ggbkgndfflhfannnhijflbbgioainncc/"
   ]
 }
 ```
